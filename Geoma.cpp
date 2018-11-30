@@ -218,60 +218,6 @@ ll ras(pair < ll, ll > p1, pair < ll, ll > p2)
 	return pok1 * pok1 + pok2 * pok2;
 }
 
-bool cmp(pair < ll, ll > p1, pair < ll, ll > p2)
-{
-	return p1.second < p2.second;
-}
-
-ll rec(int l, int r)
-{
-	if (r == l)
-	{
-		return INF;
-	}
-	else
-	{
-		int m = (l + r) / 2;
-		ll line = v[m].first;
-		ll minr = min(rec(l, m), rec(m + 1, r));
-		vector < pair < ll, ll > > v1, v2;
-		for (int i = l; i <= m; i++)
-		{
-			if ((v[i].first - line) * (v[i].first - line) <= minr)
-			{
-				v1.push_back(v[i]);
-			}
-		}
-		for (int i = m + 1; i <= r; i++)
-		{
-			if ((v[i].first - line) * (v[i].first - line) <= minr)
-			{
-				v2.push_back(v[i]);
-			}
-		}
-		int uk = 0;
-		for (int i = 0; i < v1.size(); i++)
-		{
-			while (uk < (int)v2.size() && v1[i].second - v2[uk].second >= 0 && (v1[i].second - v2[uk].second) * (v1[i].second - v2[uk].second) > minr)
-			{
-				uk++;
-			}
-			if (uk >= (int)v2.size())
-			{
-				break;
-			}
-			for (int j = uk; j < min(uk + 10, (int)v2.size()); j++)
-			{
-				minr = min(minr, ras(v1[i], v2[j]));
-			}
-		}
-		vector < pair < ll, ll > > pok(r - l + 1);
-		merge(v.begin() + l, v.begin() + m + 1, v.begin() + m + 1, v.begin() + r + 1, pok.begin(), cmp);
-		copy(pok.begin(), pok.end(), v.begin() + l);
-		return minr;
-	}
-}
-
 vector < Point > SegmentIntersect(Point A, Point B, Point C, Point D)
 {
 	if (!isIntersectSegments(A, B, C, D))
@@ -474,15 +420,6 @@ vector < pair < ld, ld >  > CircleSegmentIntersection(Point A, Point B, Point O,
 	}
 }
 
-void pok(Point A, Point B, Point C, Point D, vector < Point > & v)
-{
-	vector < Point > v1 = SegmentIntersect(A, B, C, D);
-	for (auto el : v1)
-	{
-		v.push_back(el);
-	}
-}
-
 TCoord STriangle(Point A, Point B, Point C)
 {
 	return abs((B - A) ^ (C - A)) / 2;
@@ -503,47 +440,6 @@ TCoord SPolygon(vector < Point > v)
 	return s;
 }
 
-TCoord findTrianglesUnion(Point A, Point B, Point C, Point A1, Point B1, Point C1)
-{
-	TCoord ans = STriangle(A, B, C) + STriangle(A1, B1, C1);
-	vector < Point > v;
-	pok(A, B, A1, B1, v);
-	pok(A, B, A1, C1, v);
-	pok(A, B, B1, C1, v);
-	pok(A, C, A1, B1, v);
-	pok(A, C, A1, C1, v);
-	pok(A, C, B1, C1, v);
-	pok(B, C, A1, B1, v);
-	pok(B, C, A1, C1, v);
-	pok(B, C, B1, C1, v);
-	if (inTriangle(A, A1, B1, C1))
-	{
-		v.push_back(A);
-	}
-	if (inTriangle(B, A1, B1, C1))
-	{
-		v.push_back(B);
-	}
-	if (inTriangle(C, A1, B1, C1))
-	{
-		v.push_back(C);
-	}
-	if (inTriangle(A1, A, B, C))
-	{
-		v.push_back(A1);
-	}
-	if (inTriangle(B1, A, B, C))
-	{
-		v.push_back(B1);
-	}
-	if (inTriangle(C1, A, B, C))
-	{
-		v.push_back(C1);
-	}
-	vector < Point > v1 = findConvexHull(v);
-	ans -= SPolygon(v1);
-	return ans;
-}
 
 
 
