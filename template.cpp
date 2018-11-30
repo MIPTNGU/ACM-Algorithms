@@ -14,8 +14,8 @@
 #include <memory.h>
 #include <stack>
 
-#define push_back pb;
-#define make_pair mp;
+#define pb push_back
+#define mp make_pair
 typedef long long ll;
 typedef double ld;
 
