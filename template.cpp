@@ -13,13 +13,28 @@
 #include <queue>
 #include <memory.h>
 #include <stack>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/rope>
+
+using namespace __gnu_pbds;
+using namespace std;
+
+#define all(U) begin(U), end(U)
+#define rall(U) (U).rbegin(), (U).rend()
+#define isz(U) int((U).size())
+
+template <class T, class Compare = std::less<T»
+using ordered_set =
+tree<T, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
+template <class T, class U>
+using hash_map = gp_hash_table<T, U>;
 
 #define pb push_back
 #define mp make_pair
 typedef long long ll;
 typedef double ld;
-
-using namespace std;
 
 const int size1 = 4e5 + 50;
 const long long mod = 1e9 + 7;
